@@ -6,12 +6,13 @@ ip_lan="192.168.0.50"
 ip_masc_lan="192.168.0.0/24"
 lan=enp2s0
 
+# redireciona para o standalone ou pc 
 ip_redirect="192.168.0.60"
 port_redirect=8888
 
-ip_wan="10.0.0.0"
-ip_masc_wan="10.0.0.0/24"
-wan=enp2s1
+ip_wan="192.168.0.50"
+ip_masc_wan="192.168.0.0/24"
+wan=enp2s0
 
 
 #Rede eth0 = 192.168.2.0/24
@@ -86,6 +87,7 @@ sudo iptables -A INPUT -p tcp --syn -s 127.0.0.1 -j ACCEPT
 echo "Redirecionando Porta 80 para 8082"
 ##Redirencionar portas 80 para 8082
 sudo iptables -t nat -A PREROUTING -i $ip_lan -p tcp --dport 80 -j REDIRECT --to-port 8082
+
 echo "Redirecionando CAMERA para IP SERVIDOR"
 ##Redirencionar portas CAMERA para IP SERVIDOR
 sudo iptables -t nat -A PREROUTING -i $lan -p tcp --dport 42474 -m conntrack --ctstate NEW -j DNAT --to $ip_redirect:42474
