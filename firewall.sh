@@ -139,8 +139,8 @@ echo "Terminal Server"
 ## Terminal Server
 #sudo iptables -t nat -A PREROUTING -p tcp -i $wan --dport 3389 -j DNAT --to 192.168.2.253
 #sudo iptables -t nat -A POSTROUTING -d 192.168.2.253 -j SNAT --to 192.168.2.254
-sudo iptables -t nat -A PREROUTING -p tcp -i $wan --dport 3389 -j DNAT --to 192.168.0.50 # ip do servidor
-sudo iptables -t nat -A POSTROUTING -d 192.168.0.50 -j SNAT --to 192.168.0.1
+sudo iptables -t nat -A PREROUTING -p tcp -i $wan --dport 3389 -j DNAT --to $ip_lan# ip do servidor
+sudo iptables -t nat -A POSTROUTING -d $ip_lan -j SNAT --to 192.168.0.1
 
 echo "Liberando SSH"
 ## Liberando SSH (porta 6689 e 22 )
