@@ -2,12 +2,16 @@
 
 # Inicio do Firewall
 
-ip_lan="192.168.0.0"
+ip_lan="192.168.0.50"
 ip_masc_lan="192.168.0.0/24"
 lan=enp2s0
+
+ip_redirect="192.168.0.60"
+port_redirect=8888
+
 ip_wan="10.0.0.0"
 ip_masc_wan="10.0.0.0/24"
-wan=eth1
+wan=enp2s1
 
 
 #Rede eth0 = 192.168.2.0/24
@@ -84,8 +88,8 @@ echo "Redirecionando Porta 80 para 8082"
 sudo iptables -t nat -A PREROUTING -i $ip_lan -p tcp --dport 80 -j REDIRECT --to-port 8082
 echo "Redirecionando CAMERA para IP SERVIDOR"
 ##Redirencionar portas CAMERA para IP SERVIDOR
-sudo iptables -t nat -A PREROUTING -i $lan -p tcp --dport 42474 -m conntrack --ctstate NEW -j DNAT --to 192.168.0.60:42474
-sudo iptables -t nat -A PREROUTING -i $lan -p tcp --dport 9966 -m conntrack --ctstate NEW -j DNAT --to 192.168.0.60:9966
+sudo iptables -t nat -A PREROUTING -i $lan -p tcp --dport 42474 -m conntrack --ctstate NEW -j DNAT --to $ip_redirect:42474
+sudo iptables -t nat -A PREROUTING -i $lan -p tcp --dport 9966 -m conntrack --ctstate NEW -j DNAT --to $ip_redirect:9966
 sudo iptables -t nat -A PREROUTING -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 
 # Estabelecendo as Conexoes
@@ -205,6 +209,11 @@ iptables -A OUTPUT -p udp --dport 135:139 -m state --state NEW -j ACCEPT
 echo "Abrindo Porta de Conexao a Internet"
 ## Abre uma porta (inclusive para a Internet)
 sudo iptables -A INPUT -p tcp --destination-port 80 -j ACCEPT
+sudo iptables -A INPUT -p tcp --destination-port 21 -j ACCEPT
+sudo iptables -A INPUT -p tcp --destination-port 2121 -j ACCEPT
+sudo iptables -A INPUT -p tcp --destination-port 8081 -j ACCEPT
+sudo iptables -A INPUT -p tcp --destination-port 8082 -j ACCEPT
+sudo iptables -A INPUT -p tcp --destination-port 8083 -j ACCEPT
 sudo iptables -A INPUT -p tcp --destination-port 443 -j ACCEPT
 sudo iptables -A INPUT -p tcp --destination-port 465 -j ACCEPT
 sudo iptables -A INPUT -p tcp --destination-port 995 -j ACCEPT
@@ -220,7 +229,11 @@ sudo iptables -A INPUT -p tcp --destination-port 32400 -j ACCEPT
 
 ##Trafego
 sudo iptables -A INPUT -p tcp --destination-port 80 -j DROP
+sudo iptables -A INPUT -p tcp --destination-port 8081 -j DROP
+sudo iptables -A INPUT -p tcp --destination-port 8082 -j DROP
+sudo iptables -A INPUT -p tcp --destination-port 8083 -j DROP
 sudo iptables -A INPUT -p tcp --destination-port 21 -j DROP
+sudo iptables -A INPUT -p tcp --destination-port 2121 -j DROP
 sudo iptables -A INPUT -p tcp --destination-port 443 -j DROP
 sudo iptables -A INPUT -p tcp --destination-port 563 -j DROP
 sudo iptables -A INPUT -p tcp --destination-port 70 -j DROP
