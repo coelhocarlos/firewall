@@ -19,7 +19,7 @@ echo "################################################"
 
 externa="enp2s0"
 interna="enp2s0"
-rede_interna="192.168.0.50/24"
+rede_interna="192.168.0.0/24"
 
 echo "Interface Rede Externa .......................... "$externa
 echo "Interface Rede Interna .......................... "$interna
@@ -84,13 +84,14 @@ echo "Permite ping pra Rede Externa ................... [ OK ]"
 iptables -A FORWARD -i $interna -o $externa -p icmp -j ACCEPT
 
 echo "Permite conexões da Rede Interna pra Externa .... [ OK ]"
-iptables -A FORWARD -i $interna -o $externa -p tcp -m multiport --dports 80,443,3128,110,20,21,587,995,143,22,3389,25,5900,5100,3389,9966,32400 -j ACCEPT
+iptables -A FORWARD -i $interna -o $externa -p tcp -m multiport --dports 80,443,3128,110,20,21,587,995,143,22,3389,25,5900,5100,3389,9966,10000,11000,32400 -j ACCEPT
 
 echo "Regras cliente .................................. [ OK ]"
 iptables -A OUTPUT -p tcp -m multiport --dports 80,443 -j ACCEPT
 iptables -A OUTPUT -p udp --dport 53 -j ACCEPT
 
 echo "Regras Redirecionando ............................[ OK ]"
+echo "1" > /proc/sys/net/ipv4/ip_forward 
 iptables -t nat -A PREROUTING -i enp2s0 -p tcp --dport 42474 -m conntrack --ctstate NEW -j DNAT --to 192.168.0.60:42474
 iptables -t nat -A PREROUTING -i enp2s0 -p tcp --dport 9966 -m conntrack --ctstate NEW -j DNAT --to 192.168.0.60:9966
 iptables -t nat -A PREROUTING -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
