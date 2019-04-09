@@ -82,8 +82,8 @@ sudo iptables -A INPUT -p tcp --syn -s 127.0.0.1 -j ACCEPT
 echo "Redirecionando Porta 80 para 3128"
 ##Redirencionar portas 80 para 3128
 sudo iptables -t nat -A PREROUTING -i $ip_lan -p tcp --dport 80 -j REDIRECT --to-port 8082
-sudo iptables -t nat -A PREROUTING -i enp2s0 -p tcp --dport 42474 -m conntrack --ctstate NEW -j DNAT --to 192.168.0.60:42474
-sudo iptables -t nat -A PREROUTING -i enp2s0 -p tcp --dport 9966 -m conntrack --ctstate NEW -j DNAT --to 192.168.0.60:9966
+sudo iptables -t nat -A PREROUTING -i $lan -p tcp --dport 42474 -m conntrack --ctstate NEW -j DNAT --to 192.168.0.60:42474
+sudo iptables -t nat -A PREROUTING -i $lan -p tcp --dport 9966 -m conntrack --ctstate NEW -j DNAT --to 192.168.0.60:9966
 sudo iptables -t nat -A PREROUTING -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 
 # Estabelecendo as Conexoes
