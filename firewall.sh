@@ -10,9 +10,6 @@ iptables -F
 iptables -t nat -F
 iptables -X
 
-iptables -t nat -A PREROUTING -p tcp 192.168.0.50 --dport 34599 -j DNAT --to-destination 192.168.0.55:34599
-iptables -t nat -A POSTROUTING -p tcp -d 192.168.0.50 --dport 34599 -j SNAT --to-source 192.168.0.55
-
 #-----Allow Established Outgoing Connections
 iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 #-----Internal to External
