@@ -233,8 +233,8 @@ echo "On......................................................[#OK]"
 #####################
 ##Libera as Cameras##
 #####################
-iptables -t nat -A PREROUTING -i enp2s0 -p tcp --dport 42474 -m conntrack --ctstate NEW -j DNAT --to 192.168.0.60:42474
-iptables -t nat -A PREROUTING -i enp2s0 -p tcp --dport 9966 -m conntrack --ctstate NEW -j DNAT --to 192.168.0.60:9966
+iptables -t nat -A PREROUTING -i $LAN -p tcp --dport 42474 -m conntrack --ctstate NEW -j DNAT --to 192.168.0.60:42474
+iptables -t nat -A PREROUTING -i $LAN -p tcp --dport 9966 -m conntrack --ctstate NEW -j DNAT --to 192.168.0.60:9966
 iptables -t nat -A PREROUTING -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 iptables -A POSTROUTING -t nat -j MASQUERADE
 echo "Liberando Cameras em rede Roteadas"
@@ -250,11 +250,12 @@ iptables -A INPUT -p udp --dport 10000 -j ACCEPT
 
 echo "Liberando Webmin porta padrão 10000"
 echo "On......................................................[#OK]"
+
 #alternative Port Webmin
-iptables -t nat -A PREROUTING -p tcp --dport 10000 -j ACCEPT
-iptables -t nat -A PREROUTING -p udp --dport 10000 -j ACCEPT
-iptables -A INPUT -p tcp --dport 10000 -j ACCEPT
-iptables -A INPUT -p udp --dport 10000 -j ACCEPT
+iptables -t nat -A PREROUTING -p tcp --dport 11000 -j ACCEPT
+iptables -t nat -A PREROUTING -p udp --dport 11000 -j ACCEPT
+iptables -A INPUT -p tcp --dport 11000 -j ACCEPT
+iptables -A INPUT -p udp --dport 11000 -j ACCEPT
 
 echo "Liberando Webmin porta alternativa 11000"
 echo "On......................................................[#OK]"
