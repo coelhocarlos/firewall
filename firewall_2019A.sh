@@ -230,9 +230,11 @@ iptables -A INPUT -p udp --dport 22 -j ACCEPT
 
 echo "Liberando SSH"
 echo "On......................................................[#OK]"
+
 #####################
 ##Libera as Cameras##
 #####################
+
 iptables -t nat -A PREROUTING -i $LAN -p tcp --dport 42474 -m conntrack --ctstate NEW -j DNAT --to 192.168.0.60:42474
 iptables -t nat -A PREROUTING -i $LAN -p tcp --dport 9966 -m conntrack --ctstate NEW -j DNAT --to 192.168.0.60:9966
 iptables -t nat -A PREROUTING -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
@@ -243,6 +245,7 @@ echo "On......................................................[#OK]"
 #################
 ##Libera Webmin##
 #################
+
 iptables -t nat -A PREROUTING -p tcp --dport 10000 -j ACCEPT
 iptables -t nat -A PREROUTING -p udp --dport 10000 -j ACCEPT
 iptables -A INPUT -p tcp --dport 10000 -j ACCEPT
@@ -285,17 +288,32 @@ echo "On......................................................[#OK]"
 ###################
 
 echo "Liberando o Apache"
+iptables -t nat -A PREROUTING -p tcp --dport 80 -j ACCEPT
 iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+
+iptables -t nat -A PREROUTING -p tcp --dport 8081 -j ACCEPT
 iptables -A INPUT -p tcp --dport 8081 -j ACCEPT
+
+iptables -t nat -A PREROUTING -p tcp --dport 8082 -j ACCEPT
 iptables -A INPUT -p tcp --dport 8082 -j ACCEPT
+
+iptables -t nat -A PREROUTING -p tcp --dport 8083 -j ACCEPT
 iptables -A INPUT -p tcp --dport 8083 -j ACCEPT
 
-###################
+####################
 ##Redirecto Apache##
-###################
+####################
 
-echo "Redirecionando o Apache para porta 8082"
+echo "Redirecionando o Apache para porta 8082 Publica"
 iptables -t nat -A OUTPUT -o lo -p tcp --dport 80 -j REDIRECT --to-port 8082
+
+#################
+##Redirecto FTP##
+#################
+echo "Redirecionando o ftp para porta 2121"
+iptables -t nat -A OUTPUT -o lo -p tcp --dport 21 -j REDIRECT --to-port 2121
+iptables -A INPUT -p tcp --dport 21 -j ACCEPT
+iptables -A INPUT -p tcp --dport 2121 -j ACCEPT
 
 ####################### 
 #Bloquear Back Orifice#
