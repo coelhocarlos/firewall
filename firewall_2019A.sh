@@ -290,6 +290,12 @@ iptables -A INPUT -p tcp --dport 8081 -j ACCEPT
 iptables -A INPUT -p tcp --dport 8082 -j ACCEPT
 iptables -A INPUT -p tcp --dport 8083 -j ACCEPT
 
+###################
+##Redirecto Apache##
+###################
+
+echo "Redirecionando o Apache para porta 8082"
+iptables -t nat -A OUTPUT -o lo -p tcp --dport 80 -j REDIRECT --to-port 8082
 
 ####################### 
 #Bloquear Back Orifice#
