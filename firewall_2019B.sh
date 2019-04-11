@@ -82,7 +82,7 @@ echo "Allow all outgoing connections to port 22"
 $IPT -A OUTPUT -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
 $IPT -A INPUT  -p tcp --sport 22 -m state --state ESTABLISHED     -j ACCEPT
 
-echo "Allow outgoing icmp connections (pings,...)"
+echo "Allow outgoing icmp connections pings"
 $IPT -A OUTPUT -p icmp -m state --state NEW -j ACCEPT
 $IPT -A OUTPUT -p icmp -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
 $IPT -A INPUT  -p icmp -m state --state ESTABLISHED,RELATED     -j ACCEPT
