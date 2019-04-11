@@ -106,10 +106,10 @@ $IPT -A OUTPUT -p tcp --dport 445 -m state --state NEW,ESTABLISHED -j ACCEPT
 $IPT -A INPUT  -p tcp --sport 445 -m state --state ESTABLISHED     -j ACCEPT
 
 # Log before dropping
-$IPT -A INPUT  -j LOG  -m limit --limit 12/min --log-level 4 --log-prefix 'IP INPUT drop: '
+$IPT -A INPUT  -j LOG  -m limit --limit 12/min --log-level 4 --log-prefix "IP INPUT drop:"
 $IPT -A INPUT  -j DROP
 
-$IPT -A OUTPUT -j LOG  -m limit --limit 12/min --log-level 4 --log-prefix 'IP OUTPUT drop: '
+$IPT -A OUTPUT -j LOG  -m limit --limit 12/min --log-level 4 --log-prefix "IP OUTPUT drop:"
 $IPT -A OUTPUT -j DROP
 
 iptables-save > /etc/webmin/firewall/iptables.save
