@@ -87,11 +87,11 @@ $IPT -A OUTPUT -p icmp -m state --state NEW -j ACCEPT
 $IPT -A OUTPUT -p icmp -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
 $IPT -A INPUT  -p icmp -m state --state ESTABLISHED,RELATED     -j ACCEPT
 
-echo "Allow outgoing connections to port 123 (ntp syncs)"
+echo "Allow outgoing connections to port 123 ntp syncs"
 $IPT -A OUTPUT -p udp --dport 123 -m state --state NEW,ESTABLISHED -j ACCEPT
 $IPT -A INPUT  -p udp --sport 123 -m state --state ESTABLISHED     -j ACCEPT
 
-echo "Allow outgoing connections to port 137 138 139 445  (SAMBA)"
+echo "Allow outgoing connections to port 137 138 139 445  SAMBA"
 
 $IPT -A OUTPUT -p tcp --dport 137 -m state --state NEW,ESTABLISHED -j ACCEPT
 $IPT -A INPUT  -p tcp --sport 137 -m state --state ESTABLISHED     -j ACCEPT
