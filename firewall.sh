@@ -12,7 +12,7 @@ RESET=`tput sgr0`
 
 #echo -e "hello ${RED}some red text${RESET} world"
 # Abre para uma faixa de endereços da rede local
-# iptables -A INPUT -p tcp --syn -s 192.168.0.0/255.255.255.0 -j ACCEPT
+ iptables -A INPUT -p tcp --syn -s 192.168.0.0/255.255.255.0 -j ACCEPT
 #limpando Regras
 echo -e "${MAGENTA} Limpando as Chains";
 # Limpando as Chains
