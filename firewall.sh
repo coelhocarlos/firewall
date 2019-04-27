@@ -82,6 +82,7 @@ echo -e "${GREEN} Porta Webmin 10000 padrão OK";
  iptables -A INPUT -p tcp --destination-port 11000 -j ACCEPT
 echo -e "${GREEN} Porta Webmin 11000 Alternativa OK";
  iptables -A INPUT -p tcp -m tcp --destination-port 25565 -j ACCEPT
+ iptables -I INPUT -p tcp --dport 25565 --syn -j ACCEPT
 
 
 # Allow incoming SSH
