@@ -123,6 +123,12 @@ echo -e "${MAGENTA} Liberando Portas Alternativas para FTP usando 2121";
  iptables -A PREROUTING -t raw -p tcp --dport 2121 -d 192.168.0.50 -j CT --helper ftp
  iptables -t nat -A PREROUTING -p tcp --destination-port 20:2121 -i enp2s0 -j DNAT --to-destination 192.168.0.50
 echo -e "${GREEN} Porta alternativa liberada FTP 21 para redirecionada 2121";
+echo -e "${MAGENTA} Liberando Portas  para TFTP ";
+# tftpd-hpa PXE
+iptables -A INPUT -p udp --dport 69 -j ACCEPT
+iptables -A INPUT -p udp -s 192.168.0.0/24 --dport 69 -j ACCEPT
+iptables -I INPUT -p tcp -m tcp --dport 25 -j ACCEPT
+echo -e "${GREEN}  TFTP OK";
 echo -e "${MAGENTA} Ignorando pings ICMP";
 # Ignora pings
 echo "1" > /proc/sys/net/ipv4/icmp_echo_ignore_all
