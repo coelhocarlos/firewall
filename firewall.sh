@@ -102,6 +102,8 @@ sudo iptables -A INPUT -p udp -m udp --dport 137 -j ACCEPT
 sudo iptables -A INPUT -p udp -m udp --dport 138 -j ACCEPT
 sudo iptables -A INPUT -p tcp -m tcp --dport 139 -j ACCEPT
 sudo iptables -A INPUT -p tcp -m tcp --dport 445 -j ACCEPT
+sudo iptables -A INPUT -p tcp -m tcp --dport 32400 -j ACCEPT
+sudo iptables -A INPUT -p tcp -m tcp --dport 32469 -j ACCEPT
 sudo iptables -A INPUT -s 192.168.0.0/24 -p udp -m udp --dport 137 -j ACCEPT
 sudo iptables -A INPUT -s 192.168.0.0/24 -p udp -m udp --dport 138 -j ACCEPT
 sudo iptables -A INPUT -s 192.168.0.0/24 -p tcp -m tcp --dport 139 -j ACCEPT
@@ -132,16 +134,16 @@ iptables -I INPUT -p tcp -m tcp --dport 25 -j ACCEPT
 echo -e "${GREEN}  TFTP OK";
 echo -e "${MAGENTA} Ignorando pings ICMP";
 # Plex Service
-iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
-iptables -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
-iptables -A OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
-iptables -A INPUT    -d 192.168.0.50   -p tcp -m state --state NEW -m tcp --dport 32400 -j ACCEPT
-iptables -A INPUT    -s 192.168.0.0/24  -p tcp -m state --state NEW -m tcp --dport 32469 -j ACCEPT
-iptables -A INPUT    -s 192.168.0.0/24  -d 239.0.0.0/8 -p udp -m state --state NEW -m udp --dport 1900  -j ACCEPT
-iptables -A OUTPUT   -s 192.168.0.50 -d 239.0.0.0/8 -p udp -m state --state NEW -m udp --dport 1900  -j ACCEPT
-iptables -A INPUT   -j REJECT --reject-with icmp-port-unreachable
-iptables -A FORWARD -j REJECT --reject-with icmp-port-unreachable
-iptables -A OUTPUT  -j REJECT --reject-with icmp-port-unreachable
+#iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+#iptables -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
+#iptables -A OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+#iptables -A INPUT    -d 192.168.0.50   -p tcp -m state --state NEW -m tcp --dport 32400 -j ACCEPT
+#iptables -A INPUT    -s 192.168.0.0/24  -p tcp -m state --state NEW -m tcp --dport 32469 -j ACCEPT
+#iptables -A INPUT    -s 192.168.0.0/24  -d 239.0.0.0/8 -p udp -m state --state NEW -m udp --dport 1900  -j ACCEPT
+#iptables -A OUTPUT   -s 192.168.0.50 -d 239.0.0.0/8 -p udp -m state --state NEW -m udp --dport 1900  -j ACCEPT
+#iptables -A INPUT   -j REJECT --reject-with icmp-port-unreachable
+#iptables -A FORWARD -j REJECT --reject-with icmp-port-unreachable
+#iptables -A OUTPUT  -j REJECT --reject-with icmp-port-unreachable
 # Ignora pings
 echo "1" > /proc/sys/net/ipv4/icmp_echo_ignore_all
 echo -e "${MAGENTA} Proteções diversas contra portscanners, ping of death, ataques DoS, etc.";
