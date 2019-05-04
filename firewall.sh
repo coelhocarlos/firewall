@@ -133,6 +133,12 @@ iptables -A INPUT -p udp -s 192.168.0.0/24 --dport 69 -j ACCEPT
 iptables -I INPUT -p tcp -m tcp --dport 25 -j ACCEPT
 echo -e "${GREEN}  TFTP OK";
 echo -e "${MAGENTA} Ignorando pings ICMP";
+# KMS
+echo -e "${MAGENTA} Liberando Portas kms 1688";
+iptables -A INPUT -p tcp --dport 1688 -j ACCEPT
+iptables -A OUTPU -p tcp --dport 1688 -j ACCEPT
+iptables -A FORWARD -p tcp --dport 1688 -j ACCEPT
+echo -e "${GREEN} Porta liberada 1688 ";
 # Plex Service
 #iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
 #iptables -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
@@ -158,6 +164,8 @@ echo -e "${MAGENTA}Permitindo o estabelecimento de novas conexões iniciadas por
 # Permite o estabelecimento de novas conexões iniciadas por você // coração do firewall //
  iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
  iptables -A OUTPUT -m conntrack --ctstate ESTABLISHED,RELATED,NEW -j ACCEPT
+
+
 
 echo -e "${MAGENTA}Abre para a interface de loopback.";
 echo -e "${MAGENTA}Esta regra é essencial para o KDE e outros programas gráficos";
