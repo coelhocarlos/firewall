@@ -78,12 +78,26 @@ echo -e "${GREEN} Porta web 8083 OK";
  iptables -A INPUT -p tcp --destination-port 8084 -j ACCEPT
 echo -e "${GREEN} Porta web 8084 OK";
  iptables -A INPUT -p tcp --destination-port 10000 -j ACCEPT
-echo -e "${GREEN} Porta Webmin 10000 padrão OK";
+ 
+ # Allow webmin na porta 10000
+echo -e "${MAGENTA=}Abrindo Porta Webmin 10000";
  iptables -A INPUT -p tcp --destination-port 11000 -j ACCEPT
-echo -e "${GREEN} Porta Webmin 11000 Alternativa OK";
+echo -e "${GREEN} Porta Webmin 10000 OK";
+
+ # Allow webmin na porta 11000 Alternativa
+ echo -e "${GREEN} Porta Webmin 11000 Alternativa OK";
+ 
+ # Allow Minecraft na porta 25565
+echo -e "${MAGENTA=}Abrindo Porta MINECRAFT 25565";
  iptables -A INPUT -p tcp -m tcp --destination-port 25565 -j ACCEPT
  iptables -I INPUT -p tcp --dport 25565 --syn -j ACCEPT
+echo -e "${GREEN} Porta Minecraft 25565 OK";
 
+ # Allow incoming MYSQL
+echo -e "${MAGENTA=}Abrindo Porta MYSQL 3306";
+iptables -A INPUT -p tcp -m tcp --dport 3306 -j ACCEPT
+iptables -A INPUT -i enp2s0 -p tcp --destination-port 3306 -j ACCEPT
+echo -e "${GREEN} Porta MYSQL 3306 OK";
 
 # Allow incoming SSH
 echo -e "${MAGENTA=}Abrindo Incomming para SSH";
