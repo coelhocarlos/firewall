@@ -6,6 +6,9 @@ modprobe iptable_nat
 #Ativa o compartilharmento da internet para o dhcp
 iptables -t nat -A POSTROUTING -o eth1 -j MASQUERADE
 
+#libera as portas webmin
+iptables -A INPUT -p tcp -s 0/0 -d 0/0 --destination-port webmin -j ACCEPT
+
 #libera as portas smtp
 iptables -A INPUT -p tcp -s 0/0 -d 0/0 --destination-port smtp -j ACCEPT
 iptables -A INPUT -p tcp -s 0/0 -d 0/0 --destination-port smtp -j ACCEPT
@@ -49,6 +52,8 @@ iptables -A OUTPUT -p tcp -s 0/0 -d 0/0 --destination-port 3500 -j ACCEPT
 iptables -A OUTPUT -p tcp -s 0/0 -d 0/0 --destination-port 8200 -j ACCEPT
 iptables -A OUTPUT -p udp -s 0/0 -d 0/0 --destination-port 3500 -j ACCEPT
 iptables -A OUTPUT -p udp -s 0/0 -d 0/0 --destination-port 8200 -j ACCEPT
+iptables -A OUTPUT -p udp -s 0/0 -d 0/0 --destination-port 34599 -j ACCEPT
+iptables -A OUTPUT -p udp -s 0/0 -d 0/0 --destination-port 34567 -j ACCEPT
 #libera remote desktop
 iptables -A OUTPUT -p udp -s 0/0 -d 0/0 --destination-port 3389 -j ACCEPT
 
@@ -71,12 +76,13 @@ iptables -A FORWARD -i eth1 -s 192.168.15.100 -m string --algo bm --string "yout
 #iptables -t nat -A PREROUTING -p tcp --dport 3500 -j DNAT --to-destination 192.168.0.109:3500
 iptables -t nat -A PREROUTING -p tcp -i eth1 -d 179.111.244.97 --dport 34599 -j DNAT --to-destination 192.168.15.55:34599
 iptables -t nat -A PREROUTING -p tcp -i eth1 -d 179.111.244.97 --dport 34599 -j DNAT --to-destination 192.168.15.55:34599
+iptables -t nat -A PREROUTING -p tcp -i eth1 -d 179.111.244.97 --dport 34567 -j DNAT --to-destination 192.168.15.55:34567
+iptables -t nat -A PREROUTING -p tcp -i eth1 -d 179.111.244.97 --dport 34567 -j DNAT --to-destination 192.168.15.55:34567
 
 #redireciona ip externo paras servidor remote desktop facility
-iptables -t nat -A PREROUTING -p tcp -i eth0 -d 179.111.244.97 --dport 3389 -j DNAT --to-destination 192.168.15.100:3389
+iptables -t nat -A PREROUTING -p tcp -i eth0 -d 179.111.244.97 --dport 3389 -j DNAT --to-destination 192.168.15.55:3389
+iptables -t nat -A PREROUTING -p tcp -i eth0 -d 192.168.15.100 --dport 3389 -j DNAT --to-destination 192.168.15.55:3389
 
-iptables -A FORWARD -i eth0 -o eth1 -p tcp -d 192.168.15.100 --dport 3500 -j ACCEPT
-iptables -A FORWARD -i eth0 -o eth1 -p tcp -d 192.168.15.100 --dport 8200 -j ACCEPT
 
 #redireciona acesso eth0 para 192.168.0.111 ,portas 80,8080, 443, 110, 25, 587 e 53
 iptables -t nat -A PREROUTING -p tcp -i eth1 -d 179.111.244.97 --dport 80 -j DNAT --to-destination 192.168.0.100:80
