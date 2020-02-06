@@ -80,11 +80,11 @@ iptables -t nat -A PREROUTING -p tcp -i eth1 -d 179.111.244.97 --dport 34567 -j 
 iptables -t nat -A PREROUTING -p tcp -i eth1 -d 179.111.244.97 --dport 34567 -j DNAT --to-destination 192.168.15.55:34567
 
 #redireciona ip externo paras servidor remote desktop facility
-iptables -t nat -A PREROUTING -p tcp -i eth0 -d 179.111.244.97 --dport 3389 -j DNAT --to-destination 192.168.15.55:3389
-iptables -t nat -A PREROUTING -p tcp -i eth0 -d 192.168.15.100 --dport 3389 -j DNAT --to-destination 192.168.15.55:3389
+iptables -t nat -A PREROUTING -p tcp -i eth1 -d 179.111.244.97 --dport 3389 -j DNAT --to-destination 192.168.15.50:3389
+iptables -t nat -A PREROUTING -p tcp -i eth1 -d 192.168.15.100 --dport 3389 -j DNAT --to-destination 192.168.15.50:3389
 
 
-#redireciona acesso eth0 para 192.168.0.111 ,portas 80,8080, 443, 110, 25, 587 e 53
+#redireciona acesso eth1 para 192.168.0.111 ,portas 80,8080, 443, 110, 25, 587 e 53
 iptables -t nat -A PREROUTING -p tcp -i eth1 -d 179.111.244.97 --dport 80 -j DNAT --to-destination 192.168.0.100:80
 iptables -t nat -A PREROUTING -p tcp -i eth1 -d 179.111.244.97 --dport 8080 -j DNAT --to-destination 192.168.0.100:8080
 
@@ -94,14 +94,15 @@ iptables -t nat -A PREROUTING -p tcp -i eth1 -d 179.111.244.97 --dport 25 -j DNA
 iptables -t nat -A PREROUTING -p tcp -i eth1 -d 179.111.244.97 --dport 587 -j DNAT --to-destination 192.168.15.100:587
 
 
+iptables -A FORWARD -i eth1 -o eth1 -p tcp -d 192.168.15.100 --dport 25 -j ACCEPT
 iptables -A FORWARD -i eth1 -o eth1 -p tcp -d 192.168.15.100 --dport 80 -j ACCEPT
-iptables -A FORWARD -i eth1 -o eth1 -p tcp -d 192.168.15.100 --dport 8080 -j ACCEPT
-iptables -A FORWARD -i eth1 -o eth1 -p tcp -d 192.168.15.100 --dport 8889 -j ACCEPT
-iptables -A FORWARD -i eth1 -o eth1 -p tcp -d 192.168.15.100 --dport 10000 -j ACCEPT
 iptables -A FORWARD -i eth1 -o eth1 -p tcp -d 192.168.15.100 --dport 443 -j ACCEPT
 iptables -A FORWARD -i eth1 -o eth1 -p tcp -d 192.168.15.100 --dport 110 -j ACCEPT
-iptables -A FORWARD -i eth1 -o eth1 -p tcp -d 192.168.15.100 --dport 25 -j ACCEPT
 iptables -A FORWARD -i eth1 -o eth1 -p tcp -d 192.168.15.100 --dport 587 -j ACCEPT
+iptables -A FORWARD -i eth1 -o eth1 -p tcp -d 192.168.15.100 --dport 8080 -j ACCEPT
+iptables -A FORWARD -i eth1 -o eth1 -p tcp -d 192.168.15.100 --dport 8888 -j ACCEPT
+iptables -A FORWARD -i eth1 -o eth1 -p tcp -d 192.168.15.100 --dport 8889 -j ACCEPT
+iptables -A FORWARD -i eth1 -o eth1 -p tcp -d 192.168.15.100 --dport 10000 -j ACCEPT
 
 }
 
